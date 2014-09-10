@@ -70,13 +70,8 @@
             GetRootDirectory();
 
             var interval = GetConfigurationParameter(
-                ConfigKeyPeriodTimespan, 
-                s =>
-                    {
-                        TimeSpan timeSpan;
-                        TimeSpan.TryParse(s, out timeSpan);
-                        return timeSpan;
-                    });
+                ConfigKeyPeriodTimespan,
+                TimeSpan.Parse);
             var timer = new Timer { Interval = interval.TotalMilliseconds };
             timer.Elapsed += this.OnTimer;
             timer.Start();
@@ -129,12 +124,7 @@
 
             var retentionTimeSpan = GetConfigurationParameter(
                 ConfigKeyRetentionPeriodTimespan, 
-                s =>
-                    {
-                        TimeSpan timeSpan;
-                        TimeSpan.TryParse(s, out timeSpan);
-                        return timeSpan;
-                    });
+                TimeSpan.Parse);
 
             var cutoffTime = DateTime.Now.Subtract(retentionTimeSpan);
             var rootDirectory = GetRootDirectory();
