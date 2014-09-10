@@ -21,7 +21,7 @@
 
         #region Fields
 
-        private IFileSystem fileSystem;
+        private readonly IFileSystem fileSystem;
 
         #endregion
 
@@ -32,7 +32,8 @@
             this.fileSystem = fileSystem;
         }
 
-        [InjectionConstructor, UsedImplicitly]
+        [InjectionConstructor]
+        [UsedImplicitly]
         public ImageDeleter()
             : this(new FileSystem())
         {
@@ -44,8 +45,10 @@
 
         public void Run(DateTime cutoffTime, string rootDirectory)
         {
+            var trimmedCutoff = new DateTime(cutoffTime.Year, cutoffTime.Month, cutoffTime.Day, cutoffTime.Hour, 0, 0);
+            Log.InfoFormat("Using a cutoffTime of {0}", trimmedCutoff);
             this.DeleteFromImagesDirectoryTree(
-                cutoffTime, 
+                trimmedCutoff, 
                 this.fileSystem.DirectoryInfo.FromDirectoryName(rootDirectory));
         }
 
@@ -101,7 +104,11 @@
         {
             var folderWithoutSubfolder =
                 rootDirectory.GetDirectories("*.*", SearchOption.AllDirectories).Where(d => !d.GetDirectories().Any());
-            foreach (var directoryInfo in folderWithoutSubfolder)
+            long totalNumberOfFiles = 0;
+            var directoryInfoBases = folderWithoutSubfolder.ToList();
+            directoryInfoBases.ForEach(i => totalNumberOfFiles += i.GetFiles().Count());
+            long numberOfFilesRemoved = 0;
+            foreach (var directoryInfo in directoryInfoBases)
             {
                 var dayInfo = directoryInfo.Parent;
                 if (dayInfo == null)
@@ -153,6 +160,7 @@
                     var date = new DateTime(year, month, day, hour, 0, 0);
                     if (date < cutoffTime)
                     {
+                        numberOfFilesRemoved += directoryInfo.GetFiles().Count();
                         directoryInfo.Delete(true);
                     }
                 }
@@ -166,6 +174,8 @@
                         hour);
                 }
             }
+
+            Log.InfoFormat("Files found before delete {0} files deleted {1}", totalNumberOfFiles, numberOfFilesRemoved);
         }
 
         #endregion
