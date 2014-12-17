@@ -7,7 +7,6 @@
     using System.Timers;
 
     using ImageCleanupLib;
-    using ImageCleanupLib.UnityExtensions;
 
     using log4net;
 
@@ -128,13 +127,11 @@
             var rootDirectory = GetRootDirectory();
 
             var container = ContainerManager.GetContainer();
-            var deleter = container.Resolve<IImageDeleter>(
-                new TypeParameterOverrides(cutoffTime), 
-                new TypeParameterOverrides(rootDirectory));
+            var deleter = container.Resolve<IImageDeleter>();
 
             Log.InfoFormat("Beggining deletion of images older than {0} from root {1}", cutoffTime, rootDirectory);
 
-            deleter.Run();
+            deleter.Run(cutoffTime, rootDirectory.FullName);
         }
 
         #endregion

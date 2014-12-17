@@ -2,11 +2,12 @@
 {
     using System;
     using System.IO;
+    using System.IO.Abstractions;
     using System.Linq;
 
     using log4net;
 
-    internal class ImageDeleter : IImageDeleter
+    public class ImageDeleter : IImageDeleter
     {
         #region Static Fields
 
@@ -16,27 +17,31 @@
 
         #region Fields
 
-        private readonly DateTime cutoffTime;
-
-        private readonly DirectoryInfo rootDirectory;
+        private IFileSystem fileSystem;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public ImageDeleter(DateTime cutoffTime, DirectoryInfo rootDirectory)
+        public ImageDeleter(IFileSystem fileSystem)
         {
-            this.cutoffTime = cutoffTime;
-            this.rootDirectory = rootDirectory;
+            this.fileSystem = fileSystem;
+        }
+
+        public ImageDeleter()
+            : this(new FileSystem())
+        {
         }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public void Run()
+        public void Run(DateTime cutoffTime, string rootDirectory)
         {
-            this.ConstructDateFromDirectoryTree();
+            this.DeleteFromImagesDirectoryTree(
+                cutoffTime, 
+                this.fileSystem.DirectoryInfo.FromDirectoryName(rootDirectory));
 
             // this.rootDirectory.GetFiles("*.*", SearchOption.AllDirectories)
             // .Where(f => f.CreationTime < this.cutoffTime)
@@ -96,11 +101,10 @@
             return false;
         }
 
-        private void ConstructDateFromDirectoryTree()
+        private void DeleteFromImagesDirectoryTree(DateTime cutoffTime, DirectoryInfoBase rootDirectory)
         {
             var folderWithoutSubfolder =
-                this.rootDirectory.EnumerateDirectories("*.*", SearchOption.AllDirectories)
-                    .Where(d => !d.GetDirectories().Any());
+                rootDirectory.GetDirectories("*.*", SearchOption.AllDirectories).Where(d => !d.GetDirectories().Any());
             foreach (var directoryInfo in folderWithoutSubfolder)
             {
                 var dayInfo = directoryInfo.Parent;
@@ -149,7 +153,7 @@
                 }
 
                 var date = new DateTime(year, month, day, hour, 0, 0);
-                if (date < this.cutoffTime)
+                if (date < cutoffTime)
                 {
                     directoryInfo.Delete(true);
                 }
