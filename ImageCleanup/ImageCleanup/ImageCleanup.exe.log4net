@@ -3,15 +3,14 @@
   <appender name="EventLogAppender" type="log4net.Appender.EventLogAppender" >
     <applicationName value="ImageCleanup" />
     <layout type="log4net.Layout.PatternLayout">
-      <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
+      <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
     </layout>
   </appender>
   <appender name="Console" type="log4net.Appender.ConsoleAppender">
     <layout type="log4net.Layout.PatternLayout">
-      <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
+      <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
     </layout>
   </appender>
-
   <root>
     <level value="DEBUG" />
     <appender-ref ref="Console" />

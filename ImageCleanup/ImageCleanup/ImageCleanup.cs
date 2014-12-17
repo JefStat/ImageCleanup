@@ -37,6 +37,16 @@
 
         #region Methods
 
+        internal void InternalStart(string[] args)
+        {
+            this.OnStart(args);
+        }
+
+        internal void InternalStop()
+        {
+            this.OnStop();
+        }
+
         protected override void OnStart(string[] args)
         {
             Log.Info("starting");
