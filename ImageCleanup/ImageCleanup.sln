@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{917C9B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCleanupLib", "ImageCleanupLib\ImageCleanupLib.csproj", "{10D5924A-20FD-4046-8411-4C4CF9EE6E12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCleanupLibTest", "ImageCleanupLibTest\ImageCleanupLibTest.csproj", "{DEE4CDEC-D2A1-482F-9E75-DE271BDE89DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCleanupLib.Test", "ImageCleanupLibTest\ImageCleanupLib.Test.csproj", "{DEE4CDEC-D2A1-482F-9E75-DE271BDE89DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
