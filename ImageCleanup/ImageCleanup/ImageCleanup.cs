@@ -17,6 +17,7 @@
         private const string ConfigKeyPeriodHours = "PERIOD_HOURS";
 
         private const string ConfigKeyRetentionPeriodHours = "RETENTION_PERIOD_HOURS";
+        private const string InvalidValueForConfigurationKey = "Could not parse value: {1}  for configuration key: {0}";
 
         #endregion
 
@@ -57,7 +58,7 @@
             if (!rootDirectoryFileInfo.Exists)
             {
                 Log.ErrorFormat(
-                    "Could not parse value: {1}  for configuration key: {0}", 
+                    InvalidValueForConfigurationKey, 
                     ConfigKeyImageDirectory, 
                     rootDirectory);
                 return;
@@ -76,7 +77,7 @@
             }
             else
             {
-                Log.ErrorFormat("Could not parse value: {1}  for configuration key: {0}", ConfigKeyPeriodHours, period);
+                Log.ErrorFormat(InvalidValueForConfigurationKey, ConfigKeyPeriodHours, period);
             }
         }
 
@@ -100,7 +101,7 @@
             else
             {
                 Log.ErrorFormat(
-                    "Could not parse value: {1}  for configuration key: {0}", 
+                    InvalidValueForConfigurationKey, 
                     ConfigKeyRetentionPeriodHours, 
                     period);
             }
