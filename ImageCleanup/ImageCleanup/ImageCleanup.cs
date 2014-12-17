@@ -53,7 +53,7 @@
             var settings = ConfigurationManager.AppSettings;
 
             var rootDirectory = settings.Get(ConfigKeyImageDirectory);
-            var rootDirectoryFileInfo = new FileInfo(rootDirectory);
+            var rootDirectoryFileInfo = new DirectoryInfo(rootDirectory);
             if (!rootDirectoryFileInfo.Exists)
             {
                 Log.ErrorFormat(
