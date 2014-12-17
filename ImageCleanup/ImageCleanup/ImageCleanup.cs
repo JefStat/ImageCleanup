@@ -132,7 +132,7 @@
                 new TypeParameterOverrides(cutoffTime), 
                 new TypeParameterOverrides(rootDirectory));
 
-            Log.InfoFormat("Beging deleting of images older than {0} from root {1}", cutoffTime, rootDirectory);
+            Log.InfoFormat("Beggining deletion of images older than {0} from root {1}", cutoffTime, rootDirectory);
 
             deleter.Run();
         }

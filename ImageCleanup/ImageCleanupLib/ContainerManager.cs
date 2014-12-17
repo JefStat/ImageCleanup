@@ -1,16 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ImageCleanupLib
+﻿namespace ImageCleanupLib
 {
+    using System;
+
     using Microsoft.Practices.Unity;
 
-    public class ContainerManager
+    public static class ContainerManager
     {
-        private static readonly Lazy<IUnityContainer> _instance = new Lazy<IUnityContainer>(CreateContainer);
+        #region Static Fields
+
+        private static readonly Lazy<IUnityContainer> Instance = new Lazy<IUnityContainer>(CreateContainer);
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static IUnityContainer GetContainer()
+        {
+            return Instance.Value;
+        }
+
+        #endregion
+
+        #region Methods
 
         private static IUnityContainer CreateContainer()
         {
@@ -21,9 +32,6 @@ namespace ImageCleanupLib
             return container;
         }
 
-        public static IUnityContainer GetContainer()
-        {
-            return _instance.Value;
-        }
+        #endregion
     }
 }
