@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{917C9B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCleanupLib", "ImageCleanupLib\ImageCleanupLib.csproj", "{10D5924A-20FD-4046-8411-4C4CF9EE6E12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{1F5AB2B9-272C-4DF0-9082-C6C8803AC926}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F5AB2B9-272C-4DF0-9082-C6C8803AC926}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F5AB2B9-272C-4DF0-9082-C6C8803AC926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10D5924A-20FD-4046-8411-4C4CF9EE6E12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10D5924A-20FD-4046-8411-4C4CF9EE6E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10D5924A-20FD-4046-8411-4C4CF9EE6E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10D5924A-20FD-4046-8411-4C4CF9EE6E12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
