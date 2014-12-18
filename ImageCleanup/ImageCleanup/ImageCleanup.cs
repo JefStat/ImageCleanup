@@ -9,7 +9,6 @@
     using ImageCleanupLib;
 
     using log4net;
-    using log4net.Util;
 
     using Microsoft.Practices.Unity;
 
@@ -33,13 +32,21 @@
 
         #endregion
 
+        #region Fields
+
+        private volatile bool deleteRunning;
+
+        #endregion
+
         #region Constructors and Destructors
 
         public ImageCleanup()
         {
             this.InitializeComponent();
             AppDomain.CurrentDomain.UnhandledException +=
-                (sender, args) => Log.Fatal(string.Format("Unhandled Exception from {0}", sender), args.ExceptionObject as Exception);
+                (sender, args) =>
+                Log.Fatal(string.Format("Unhandled Exception from {0}", sender), args.ExceptionObject as Exception);
+            this.deleteRunning = false;
         }
 
         #endregion
@@ -135,9 +142,18 @@
             var container = ContainerManager.GetContainer();
             var deleter = container.Resolve<IImageDeleter>();
 
-            Log.InfoFormat("Begining deletion of images older than {0} from root {1}", cutoffTime, rootDirectory);
+            if (this.deleteRunning)
+            {
+                Log.InfoFormat(
+                    "Delete is running skipping starting a new delete. Consider raising the {0} and restarting the service", 
+                    ConfigKeyPeriodTimespan);
+                return;
+            }
 
+            Log.InfoFormat("Begining deletion of images older than {0} from root {1}", cutoffTime, rootDirectory);
+            this.deleteRunning = true;
             deleter.Run(cutoffTime, rootDirectory.FullName);
+            this.deleteRunning = false;
         }
 
         #endregion
