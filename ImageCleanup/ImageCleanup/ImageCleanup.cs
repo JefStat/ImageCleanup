@@ -9,6 +9,7 @@
     using ImageCleanupLib;
 
     using log4net;
+    using log4net.Util;
 
     using Microsoft.Practices.Unity;
 
@@ -37,6 +38,8 @@
         public ImageCleanup()
         {
             this.InitializeComponent();
+            AppDomain.CurrentDomain.UnhandledException +=
+                (sender, args) => Log.Fatal(string.Format("Unhandled Exception from {0}", sender), args.ExceptionObject as Exception);
         }
 
         #endregion
@@ -114,6 +117,9 @@
 
         private void OnTimer(object sender, ElapsedEventArgs args)
         {
+            AppDomain.CurrentDomain.UnhandledException +=
+                (s, a) => Log.Fatal(string.Format("Unhandled Exception from {0}", s), a.ExceptionObject as Exception);
+
             var retentionTimeSpan = GetConfigurationParameter(
                 ConfigKeyRetentionPeriodTimespan, 
                 s =>

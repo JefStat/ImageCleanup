@@ -5,7 +5,11 @@
     using System.IO.Abstractions;
     using System.Linq;
 
+    using ImageCleanupLib.Annotations;
+
     using log4net;
+
+    using Microsoft.Practices.Unity;
 
     public class ImageDeleter : IImageDeleter
     {
@@ -28,6 +32,7 @@
             this.fileSystem = fileSystem;
         }
 
+        [InjectionConstructor, UsedImplicitly]
         public ImageDeleter()
             : this(new FileSystem())
         {
