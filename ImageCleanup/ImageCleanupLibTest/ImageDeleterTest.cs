@@ -1,4 +1,7 @@
-﻿namespace ImageCleanupLib
+﻿using System.Reflection;
+using ICSharpCode.SharpZipLib.Zip;
+
+namespace ImageCleanupLib
 {
     using System;
     using System.Collections.Generic;
@@ -100,9 +103,60 @@
             this.hourDirectory.Verify();
         }
 
+        [TestMethod]
+        public void UnzipTestFilesWithSelfDestruct()
+        {
+            DirectoryInfo directoryInfo;
+            using (var folder = UnzipTestFiles())
+            {
+                directoryInfo = folder.DirectoryInfo;
+                Assert.IsTrue(directoryInfo.Exists);
+                AssertFileCount(directoryInfo, 3340);
+            }
+            directoryInfo.Refresh();
+            Assert.IsFalse(directoryInfo.Exists);
+        }
+
+        private static void AssertFileCount(DirectoryInfo directoryInfo, int expected)
+        {
+            var actual = directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories).Count();
+            Assert.AreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Methods
+
+        private TemporaryDirectory UnzipTestFiles()
+        {
+            var temporaryDirectory = new TemporaryDirectory();
+            var basePath = temporaryDirectory.DirectoryInfo.FullName;
+            var us = Assembly.GetExecutingAssembly();
+            using (var s = us.GetManifestResourceStream(GetType(), "TestSuite.zip"))
+            using (var zip = new ZipInputStream(s))
+            {
+                ZipEntry ze;
+                while ((ze = zip.GetNextEntry()) != null)
+                {
+                    if (ze.IsDirectory)
+                    {
+                        Directory.CreateDirectory(Path.Combine(basePath, ze.Name));
+                    }
+                    else if (ze.IsFile)
+                    {
+                        var relativeFolder = Path.Combine(basePath, Path.GetDirectoryName(ze.Name));
+                        if (!Directory.Exists(relativeFolder))
+                        {
+                            Directory.CreateDirectory(relativeFolder);
+                        }
+
+                        // all files in the ZIP are empty anyway
+                        File.AppendAllText(Path.Combine(basePath, ze.Name), String.Empty);
+                    }
+                }
+            }
+            return temporaryDirectory;
+        }
 
         private void SetupYMDH(string s, string s1, string s2, string s3)
         {
