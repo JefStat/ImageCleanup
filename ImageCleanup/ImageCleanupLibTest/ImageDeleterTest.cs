@@ -117,15 +117,15 @@ namespace ImageCleanupLib
             Assert.IsFalse(directoryInfo.Exists);
         }
 
+        #endregion
+
+        #region Methods
+
         private static void AssertFileCount(DirectoryInfo directoryInfo, int expected)
         {
             var actual = directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories).Count();
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion
-
-        #region Methods
 
         private TemporaryDirectory UnzipTestFiles()
         {
