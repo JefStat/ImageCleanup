@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Name="Solinkg Image Cleanup" Id="2F218D75-52AF-4B92-B9A5-A751DD068806" UpgradeCode="FA8FC4DA-5570-4053-9DF1-E0069751842B"
+      Language="1033" Codepage='1252' Version='1.0.0' Manufacturer='Acme Ltd.'>
+      <Package Id='*' Keywords='Installer' Description="Solink's Image Cleanup installer"
+      Comments='Image Cleanup is a Trademark of Solink' Manufacturer='Solink'
+      InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+    </Product>
+</Wix>
