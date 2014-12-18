@@ -1,4 +1,7 @@
-﻿namespace ImageCleanupLib
+﻿using System.Reflection;
+using ICSharpCode.SharpZipLib.Zip;
+
+namespace ImageCleanupLib
 {
     using System;
     using System.Collections.Generic;
@@ -103,6 +106,37 @@
         #endregion
 
         #region Methods
+
+        private TemporaryDirectory UnzipTestFiles()
+        {
+            var temporaryDirectory = new TemporaryDirectory();
+            var basePath = temporaryDirectory.DirectoryInfo.FullName;
+            var us = Assembly.GetExecutingAssembly();
+            using (var s = us.GetManifestResourceStream(GetType(), "TestSuite.zip"))
+            using (var zip = new ZipInputStream(s))
+            {
+                ZipEntry ze;
+                while ((ze = zip.GetNextEntry()) != null)
+                {
+                    if (ze.IsDirectory)
+                    {
+                        Directory.CreateDirectory(Path.Combine(basePath, ze.Name));
+                    }
+                    else if (ze.IsFile)
+                    {
+                        var relativeFolder = Path.Combine(basePath, Path.GetDirectoryName(ze.Name));
+                        if (!Directory.Exists(relativeFolder))
+                        {
+                            Directory.CreateDirectory(relativeFolder);
+                        }
+
+                        // all files in the ZIP are empty anyway
+                        File.AppendAllText(Path.Combine(basePath, ze.Name), String.Empty);
+                    }
+                }
+            }
+            return temporaryDirectory;
+        }
 
         private void SetupYMDH(string s, string s1, string s2, string s3)
         {
