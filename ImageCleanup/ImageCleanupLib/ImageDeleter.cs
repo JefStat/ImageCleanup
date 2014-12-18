@@ -59,7 +59,7 @@
 
         private static bool GetDay(string value, out int day)
         {
-            if (!int.TryParse(value, out day) || 31 <= day || day < 1)
+            if (!int.TryParse(value, out day) || 31 < day || day < 1)
             {
                 Log.DebugFormat("Directory name {0} is not a day", value);
                 return true;
@@ -70,7 +70,7 @@
 
         private static bool GetHour(string value, out int hour)
         {
-            if (!int.TryParse(value, out hour) || 24 <= hour || hour < 1)
+            if (!int.TryParse(value, out hour) || 24 <= hour || hour < 0)
             {
                 Log.DebugFormat("Directory name {0} is not an hour", value);
                 return true;
@@ -81,7 +81,7 @@
 
         private static bool GetMonth(string value, out int month)
         {
-            if (!int.TryParse(value, out month) || 12 <= month || month < 1)
+            if (!int.TryParse(value, out month) || 12 < month || month < 1)
             {
                 Log.DebugFormat("Directory name {0} is not a month", value);
                 return true;
@@ -152,10 +152,22 @@
                     continue;
                 }
 
-                var date = new DateTime(year, month, day, hour, 0, 0);
-                if (date < cutoffTime)
+                try
                 {
-                    directoryInfo.Delete(true);
+                    var date = new DateTime(year, month, day, hour, 0, 0);
+                    if (date < cutoffTime)
+                    {
+                        directoryInfo.Delete(true);
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Log.InfoFormat(
+                        "Date (year/month/day  {0}/{1}/{2} {3}:0:0 is not a valid date", 
+                        year, 
+                        month, 
+                        day, 
+                        hour);
                 }
             }
         }
