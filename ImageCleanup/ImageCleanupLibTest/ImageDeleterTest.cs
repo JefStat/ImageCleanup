@@ -117,6 +117,34 @@ namespace ImageCleanupLib
             Assert.IsFalse(directoryInfo.Exists);
         }
 
+        /*
+         * The zip file contains data for:
+         * 2014/09/09 [19-20]
+         * 2014/09/10 [08-20]
+         * 2014/09/11 [08-09]
+         * 2014/12/04 [12-14]
+         */
+
+        [TestMethod]
+        public void DeleteSeptember09FromZip()
+        {
+            using (var folder = UnzipTestFiles())
+            {
+                var directoryInfo = folder.DirectoryInfo;
+                var imageDeleter = new ImageDeleter();
+                const int numberOfImagesToDelete = 0
+                                                   + 13 + 13 + 13 + 13
+                                                   + 0 + 13 + 13
+                                                   + 13 + 13 + 13 + 13
+                                                   + 0 + 13 + 13
+                                                   + 13 + 13 + 13 + 13
+                                                   + 0 + 13 + 13;
+
+                imageDeleter.Run(new DateTime(2014, 09, 09, 21, 0, 0), directoryInfo.FullName);
+                AssertFileCount(directoryInfo, 3340 - numberOfImagesToDelete);
+            }
+        }
+
         #endregion
 
         #region Methods
