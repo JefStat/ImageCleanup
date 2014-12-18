@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImageDeleterTest.cs" />
+    <Compile Include="TemporaryDirectory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImageCleanupLib\ImageCleanupLib.csproj">
