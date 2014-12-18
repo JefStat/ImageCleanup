@@ -103,6 +103,26 @@ namespace ImageCleanupLib
             this.hourDirectory.Verify();
         }
 
+        [TestMethod]
+        public void UnzipTestFilesWithSelfDestruct()
+        {
+            DirectoryInfo directoryInfo;
+            using (var folder = UnzipTestFiles())
+            {
+                directoryInfo = folder.DirectoryInfo;
+                Assert.IsTrue(directoryInfo.Exists);
+                AssertFileCount(directoryInfo, 3340);
+            }
+            directoryInfo.Refresh();
+            Assert.IsFalse(directoryInfo.Exists);
+        }
+
+        private static void AssertFileCount(DirectoryInfo directoryInfo, int expected)
+        {
+            var actual = directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories).Count();
+            Assert.AreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Methods
