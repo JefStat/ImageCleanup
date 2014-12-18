@@ -145,6 +145,32 @@ namespace ImageCleanupLib
             }
         }
 
+        [TestMethod]
+        public void DeleteSeptemberFromZip()
+        {
+            using (var folder = UnzipTestFiles())
+            {
+                var directoryInfo = folder.DirectoryInfo;
+                var imageDeleter = new ImageDeleter();
+                const int numberOfImagesToDelete = 1092 + 1092 + 1092;
+
+                imageDeleter.Run(new DateTime(2014, 12, 04, 12, 0, 0), directoryInfo.FullName);
+                AssertFileCount(directoryInfo, 3340 - numberOfImagesToDelete);
+            }
+        }
+
+        [TestMethod]
+        public void DeleteAllFromZip()
+        {
+            using (var folder = UnzipTestFiles())
+            {
+                var directoryInfo = folder.DirectoryInfo;
+                var imageDeleter = new ImageDeleter();
+
+                imageDeleter.Run(new DateTime(2014, 12, 04, 15, 0, 0), directoryInfo.FullName);
+                AssertFileCount(directoryInfo, 0);
+            }
+        }
         #endregion
 
         #region Methods
