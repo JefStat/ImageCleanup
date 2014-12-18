@@ -129,7 +129,7 @@
             var container = ContainerManager.GetContainer();
             var deleter = container.Resolve<IImageDeleter>();
 
-            Log.InfoFormat("Beggining deletion of images older than {0} from root {1}", cutoffTime, rootDirectory);
+            Log.InfoFormat("Begining deletion of images older than {0} from root {1}", cutoffTime, rootDirectory);
 
             deleter.Run(cutoffTime, rootDirectory.FullName);
         }
