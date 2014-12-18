@@ -123,7 +123,7 @@
                         return timeSpan;
                     });
 
-            var cutoffTime = DateTime.Now.Add(retentionTimeSpan);
+            var cutoffTime = DateTime.Now.Subtract(retentionTimeSpan);
             var rootDirectory = GetRootDirectory();
 
             var container = ContainerManager.GetContainer();
