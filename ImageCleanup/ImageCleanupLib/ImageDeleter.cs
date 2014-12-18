@@ -42,15 +42,6 @@
             this.DeleteFromImagesDirectoryTree(
                 cutoffTime, 
                 this.fileSystem.DirectoryInfo.FromDirectoryName(rootDirectory));
-
-            // this.rootDirectory.GetFiles("*.*", SearchOption.AllDirectories)
-            // .Where(f => f.CreationTime < this.cutoffTime)
-            // .ForEach(
-            // f =>
-            // {
-            // Log.InfoFormat("Deleting, {0}", f.FullName);
-            // f.Delete();
-            // });
         }
 
         #endregion
