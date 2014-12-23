@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Name="Solinkg Image Cleanup" Id="2F218D75-52AF-4B92-B9A5-A751DD068806" UpgradeCode="FA8FC4DA-5570-4053-9DF1-E0069751842B"
-      Language="1033" Codepage='1252' Version='1.0.0' Manufacturer='Acme Ltd.'>
-      <Package Id='*' Keywords='Installer' Description="Solink's Image Cleanup installer"
-      Comments='Image Cleanup is a Trademark of Solink' Manufacturer='Solink'
-      InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
-    </Product>
+  <Product Name="Solinkg Image Cleanup" Id="*"
+           UpgradeCode="FA8FC4DA-5570-4053-9DF1-E0069751842B"
+           Language="1033" Codepage='1252' Version='1.0.0' Manufacturer='Solink'>
+
+    <Package Id='*' Keywords='Installer' Description="Solink's Image Cleanup installer"
+             Comments='Image Cleanup is a trademark of Solink' Manufacturer='Solink'
+             InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+    <Condition Message="You need to be an administrator to install this product.">
+      Privileged
+    </Condition>
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed" />
+
+    <MediaTemplate EmbedCab='yes' />
+    <Feature Id='Complete' Title='Installer' Level='1'>
+      <ComponentGroupRef Id='ImageCleanupComponents' />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+        <Directory Id='SolinkFolder' Name='Solink'>
+          <Directory Id='ImageCleanupFolder' Name='ImageCleanup'>
+
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id='ImageCleanupComponents' Directory='ImageCleanupFolder'>
+      <Component Guid='{DC241915-C6AD-43AE-9C97-EE623A18EFB9}'>
+        <File Id='ImageCleanupExe' Source='$(var.ImageCleanup.TargetPath)' KeyPath='yes' />
+      </Component>
+      <Component Guid='{CF642A21-4957-4053-8715-55587AEC8572}'>
+        <File Id='ImageCleanupConfig' Source='$(var.ImageCleanup.TargetPath).config' KeyPath='yes' />
+      </Component>
+      <Component Guid='{6329DF1E-A56B-4B14-A45F-7520C2A4F198}'>
+        <File Id='ImageCleanupLogConfig' Source='$(var.ImageCleanup.TargetPath).log4net' KeyPath='yes' />
+      </Component>
+      <Component Guid='{7AA3A2E0-128F-470C-8E2B-B58F36D8B783}'>
+        <File Id='ImageCleanupLib' Source='$(var.ImageCleanup.TargetDir)ImageCleanupLib.dll' KeyPath='yes' />
+      </Component>
+      <Component Guid='{D80BDE78-87EE-4EED-9E3C-E383317470C4}'>
+        <File Id='log4netdll' Source='$(var.ImageCleanup.TargetDir)log4net.dll' KeyPath='yes' />
+      </Component>
+      <Component Guid='{EF797935-9D58-41CF-8A73-66E7EADF5CAA}'>
+        <File Id='log4netxml' Source='$(var.ImageCleanup.TargetDir)log4net.xml' KeyPath='yes' />
+      </Component>
+      <Component Guid='{3F6CECDD-4041-4F28-B132-AE536E90D709}'>
+        <File Id='UnityConfigurationdll'
+              Source='$(var.ImageCleanup.TargetDir)Microsoft.Practices.Unity.Configuration.dll' KeyPath='yes' />
+      </Component>
+      <Component Guid='{137AF26F-BF37-4BD7-9F48-2BE6E21F1BEB}'>
+        <File Id='UnityConfigurationxml'
+              Source='$(var.ImageCleanup.TargetDir)Microsoft.Practices.Unity.Configuration.xml' KeyPath='yes' />
+      </Component>
+      <Component Guid='{ADD82CF5-5406-44F0-8564-1F8AAE421FE1}'>
+        <File Id='Unitydll' Source='$(var.ImageCleanup.TargetDir)Microsoft.Practices.Unity.dll' KeyPath='yes' />
+      </Component>
+      <Component Guid='{654FD54C-CA20-415A-A98A-55A00BD166FD}'>
+        <File Id='Unityxml' Source='$(var.ImageCleanup.TargetDir)Microsoft.Practices.Unity.xml' KeyPath='yes' />
+      </Component>
+      <Component Guid='{C234ACE8-EB90-467C-9773-E93425AB81FA}'>
+        <File Id='UnityRegistrationByConventiondll'
+              Source='$(var.ImageCleanup.TargetDir)Microsoft.Practices.Unity.RegistrationByConvention.dll'
+              KeyPath='yes' />
+      </Component>
+      <Component Guid='{03EFFFEC-F523-4A8C-9451-A57BC682CE4A}'>
+        <File Id='UnityRegistrationByConventionxml'
+              Source='$(var.ImageCleanup.TargetDir)Microsoft.Practices.Unity.RegistrationByConvention.xml'
+              KeyPath='yes' />
+      </Component>
+      <Component Guid='{71DFB030-3854-4A57-A00A-81B268511135}'>
+        <File Id='SystemIOAbstractionsdll' Source='$(var.ImageCleanup.TargetDir)System.IO.Abstractions.dll'
+              KeyPath='yes' />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
 </Wix>
